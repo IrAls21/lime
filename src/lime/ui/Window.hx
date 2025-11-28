@@ -157,6 +157,7 @@ class Window
 	@:noCompletion private var __backend:WindowBackend;
 	@:noCompletion private var __borderless:Bool;
 	@:noCompletion private var __fullscreen:Bool;
+	@:noCompletion private var __alwaysOnTop:Bool;
 	@:noCompletion private var __height:Int;
 	@:noCompletion private var __hidden:Bool;
 	@:noCompletion private var __maximized:Bool;
@@ -219,6 +220,7 @@ class Window
 		__y = 0;
 		__title = Reflect.hasField(__attributes, "title") ? __attributes.title : "";
 		__hidden = false;
+		__alwaysOnTop = Reflect.hasField(__attributes, "alwaysOnTop") ? __attributes.alwaysOnTop : false;
 		__borderless = Reflect.hasField(__attributes, "borderless") ? __attributes.borderless : false;
 		__resizable = Reflect.hasField(__attributes, "resizable") ? __attributes.resizable : false;
 		__maximized = Reflect.hasField(__attributes, "maximized") ? __attributes.maximized : false;
@@ -591,8 +593,12 @@ class Window
         return Windows.setWindowDarkColorMode(value);
     }
 
+	private function get_alwaysOnTop():Bool {
+		return __alwaysOnTop;
+	}
+
 	private function set_alwaysOnTop(value:Bool):Bool {
-		return __backend.setAlwaysOnTop(value);
+		return __alwaysOnTop = __backend.setAlwaysOnTop(!value);
 	}
 
 	@:noCompletion private function get_cursor():MouseCursor
