@@ -50,7 +50,7 @@ class Window
 	public var hideWindowInTab(default, set):Bool = false;
 	public var defaultTitle(get, never):String;
 	public var frameRate(get, set):Float;
-	public var alwaysOnTop(get, set):Bool;
+	public var alwaysOnTop(default, set):Bool = false;
 	public var fullscreen(get, set):Bool;
 	public var height(get, set):Int;
 	public var hidden(get, null):Bool;
@@ -156,7 +156,6 @@ class Window
 	@:noCompletion private var __attributes:WindowAttributes;
 	@:noCompletion private var __backend:WindowBackend;
 	@:noCompletion private var __borderless:Bool;
-	@:noCompletion private var __alwaysOnTop:Bool;
 	@:noCompletion private var __fullscreen:Bool;
 	@:noCompletion private var __height:Int;
 	@:noCompletion private var __hidden:Bool;
@@ -220,7 +219,6 @@ class Window
 		__y = 0;
 		__title = Reflect.hasField(__attributes, "title") ? __attributes.title : "";
 		__hidden = false;
-		__alwaysOnTop = Reflect.hasField(__attributes, "alwaysOnTop") ? __attributes.alwaysOnTop : false;
 		__borderless = Reflect.hasField(__attributes, "borderless") ? __attributes.borderless : false;
 		__resizable = Reflect.hasField(__attributes, "resizable") ? __attributes.resizable : false;
 		__maximized = Reflect.hasField(__attributes, "maximized") ? __attributes.maximized : false;
@@ -593,12 +591,8 @@ class Window
         return Windows.setWindowDarkColorMode(value);
     }
 
-	@:noCompletion private inline function get_alwaysOnTop():Bool {
-		return __alwaysOnTop;
-	}
-
-	@:noCompletion private function set_alwaysOnTop(value:Bool):Bool {
-		return __alwaysOnTop = __backend.setAlwaysOnTop(value);
+	private function set_alwaysOnTop(value:Bool):Bool {
+		return __backend.setAlwaysOnTop(value);
 	}
 
 	@:noCompletion private function get_cursor():MouseCursor

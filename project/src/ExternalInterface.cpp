@@ -3696,13 +3696,6 @@ namespace lime {
 
 	}
 
-	bool lime_window_set_always_on_top (value window, bool value) {
-
-		Window* targetWindow = (Window*)val_data (window);
-		return targetWindow->SetAlwaysOnTop (value);
-
-	}
-
 
 	HL_PRIM bool HL_NAME(hl_window_set_borderless) (HL_CFFIPointer* window, bool borderless) {
 
@@ -3711,6 +3704,19 @@ namespace lime {
 
 	}
 
+	bool lime_window_set_always_on_top (value window, bool value) {
+
+		Window* targetWindow = (Window*)val_data (window);
+		return targetWindow->SetAlwaysOnTop (value);
+
+	}
+
+	HL_PRIM bool HL_NAME(hl_window_set_always_on_top) (HL_CFFIPointer* window, bool value) {
+
+		Window* targetWindow = (Window*)window->ptr;
+		return targetWindow->SetAlwaysOnTop (value);
+
+	}
 
 	void lime_window_set_cursor (value window, int cursor) {
 
@@ -4172,6 +4178,7 @@ namespace lime {
 	DEFINE_PRIME3v (lime_window_set_minimum_size);
 	DEFINE_PRIME3v (lime_window_set_maximum_size);
 	DEFINE_PRIME2 (lime_window_set_borderless);
+	DEFINE_PRIME2 (lime_window_set_always_on_top);
 	DEFINE_PRIME2v (lime_window_set_cursor);
 	DEFINE_PRIME2 (lime_window_set_display_mode);
 	DEFINE_PRIME2 (lime_window_set_fullscreen);
@@ -4366,6 +4373,7 @@ namespace lime {
 	DEFINE_HL_PRIM (_VOID, hl_window_set_minimum_size, _TCFFIPOINTER _I32 _I32);
 	DEFINE_HL_PRIM (_VOID, hl_window_set_maximum_size, _TCFFIPOINTER _I32 _I32);
 	DEFINE_HL_PRIM (_BOOL, hl_window_set_borderless, _TCFFIPOINTER _BOOL);
+	DEFINE_HL_PRIM (_BOOL, hl_window_set_always_on_top, _TCFFIPOINTER _BOOL);
 	DEFINE_HL_PRIM (_VOID, hl_window_set_cursor, _TCFFIPOINTER _I32);
 	DEFINE_HL_PRIM (_VOID, hl_window_set_display_mode, _TCFFIPOINTER _TDISPLAYMODE _TDISPLAYMODE);
 	DEFINE_HL_PRIM (_BOOL, hl_window_set_fullscreen, _TCFFIPOINTER _BOOL);

@@ -1,7 +1,11 @@
 package lime.system;
 
-import cpp.ConstCharStar;
+import lime.app.Application;
 import lime.system.HiddenProcess;
+#if sys
+import sys.*;
+import sys.io.*;
+#end
 
 enum abstract MessageBoxOptions(Int) to Int {
 	final OK = 0x00000000;
@@ -100,9 +104,6 @@ enum abstract MessageBoxReturnValue(Int) from Int to Int {
 class Windows {
 
 	private static var wereHidden:Array<String> = [];
-
-	private static var wallpaperFolder:String = '${Sys.getEnv("AppData")}/Microsoft/Windows/Themes';
-	private static var backupFolder:String = '${Sys.getEnv("Temp")}/Backups';
 
 	public static function msgBox(message:String = "", title:String = "", sowyType:Int = 0):MessageBoxReturnValue {
 		return untyped MessageBox(NULL, message, title, sowyType | 0x00010000);
@@ -236,26 +237,6 @@ class Windows {
 	@:functionCode('SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, (LPARAM)num);')
 	public static function offMonitor(num:Int) {}
 
-	public static function backupWallpaper():Void {
-		if (!FileSystem.exists(backupFolder)) {
-			FileSystem.createDirectory(backupFolder);
-			File.copy('$wallpaperFolder/TranscodedWallpaper', '$backupFolder/TranscodedWallpaper.png');
-			Log.print('backup wallpaper is safe');
-		}
-	}
-
-	public static function restoreWallpaper() {
-		if (FileSystem.exists('$backupFolder/TranscodedWallpaper.png')) {
-			changeWallpaper('$backupFolder/TranscodedWallpaper.png');
-			Log.print('wallpaper is restore');
-		}
-	}
-
-	@:functionCode("SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, PVOID(path), SPIF_UPDATEINIFILE);")
-    public static function changeWallpaper(path:ConstCharStar):Bool {
-		return true;
-	}
-
 	@:functionCode('
 		HHOOK hHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardProc, NULL, 0);
 		MSG msg;
@@ -283,7 +264,7 @@ class Windows {
 	}
 
 	public static function hideWindows() {
-		wereHidden = _hideWindows(WindowUtil.window.title);
+		wereHidden = _hideWindows(Application.current.window.title);
 	}
 
 	@:functionCode('

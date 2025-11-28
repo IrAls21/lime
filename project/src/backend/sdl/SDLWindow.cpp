@@ -51,10 +51,7 @@ namespace lime {
 		if (flags & WINDOW_FLAG_HIDDEN) sdlWindowFlags |= SDL_WINDOW_HIDDEN;
 		if (flags & WINDOW_FLAG_MINIMIZED) sdlWindowFlags |= SDL_WINDOW_MINIMIZED;
 		if (flags & WINDOW_FLAG_MAXIMIZED) sdlWindowFlags |= SDL_WINDOW_MAXIMIZED;
-
-		#ifndef EMSCRIPTEN
 		if (flags & WINDOW_FLAG_ALWAYS_ON_TOP) sdlWindowFlags |= SDL_WINDOW_ALWAYS_ON_TOP;
-		#endif
 
 		#if defined (HX_WINDOWS) && defined (NATIVE_TOOLKIT_SDL_ANGLE) && !defined (HX_WINRT)
 		OSVERSIONINFOEXW osvi = { sizeof (osvi), 0, 0, 0, 0, {0}, 0, 0 };
@@ -777,16 +774,12 @@ namespace lime {
 
 	}
 
-	bool SDLWindow::SetAlwaysOnTop (bool value) {
+	bool SDLWindow::SetAlwaysOnTop(bool value) {
 
 		if (value) {
-
-			SDL_SetWindowAlwaysOnTop (sdlWindow, SDL_FALSE);
-
+			SDL_SetWindowAlwaysOnTop(sdlWindow, SDL_FALSE);
 		} else {
-
-			SDL_SetWindowAlwaysOnTop (sdlWindow, SDL_TRUE);
-
+			SDL_SetWindowAlwaysOnTop(sdlWindow, SDL_TRUE);
 		}
 
 		return value;

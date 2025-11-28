@@ -1,4 +1,4 @@
-package funkin.backend.system;
+package lime.system;
 
 #if cpp
 /*

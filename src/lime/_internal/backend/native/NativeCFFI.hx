@@ -1383,7 +1383,7 @@ class NativeCFFI
 		return false;
 	}
 
-	@:hlNative("lime", "hl_window_set_always_on_top") private static function lime_window_set_always_on_top(handle:CFFIPointer, borderless:Bool):Bool
+	@:hlNative("lime", "hl_window_set_always_on_top") private static function lime_window_set_always_on_top(handle:CFFIPointer, value:Bool):Bool
 	{
 		return false;
 	}
