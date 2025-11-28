@@ -1,0 +1,19 @@
+package lime.system;
+
+enum abstract WindowStyle(UInt) to UInt {
+	final SWP_ASYNCWINDOWPOS = 0x4000;
+	final SWP_DEFERERASE = 0x2000;
+	final SWP_DRAWFRAME = 0x0020;
+	final SWP_FRAMECHANGED = 0x0020;
+	final SWP_HIDEWINDOW = 0x0080;
+	final SWP_NOACTIVATE = 0x0010;
+	final SWP_NOCOPYBITS = 0x0100;
+	final SWP_NOMOVE = 0x0002;
+	final SWP_NOOWNERZORDER = 0x0200;
+	final SWP_NOREDRAW = 0x0008;
+	final SWP_NOREPOSITION = 0x0200;
+	final SWP_NOSENDCHANGING = 0x0400;
+	final SWP_NOSIZE = 0x0001;
+	final SWP_NOZORDER = 0x0004;
+	final SWP_SHOWWINDOW = 0x0040;
+}

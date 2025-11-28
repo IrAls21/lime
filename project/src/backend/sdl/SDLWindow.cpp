@@ -777,6 +777,22 @@ namespace lime {
 
 	}
 
+	bool SDLWindow::SetAlwaysOnTop (bool value) {
+
+		if (value) {
+
+			SDL_SetWindowAlwaysOnTop (sdlWindow, SDL_FALSE);
+
+		} else {
+
+			SDL_SetWindowAlwaysOnTop (sdlWindow, SDL_TRUE);
+
+		}
+
+		return value;
+
+	}
+
 
 	void SDLWindow::SetCursor (Cursor cursor) {
 

@@ -8,6 +8,7 @@ import lime.graphics.RenderContextAttributes;
 import lime.math.Rectangle;
 import lime.system.Display;
 import lime.system.DisplayMode;
+import lime.system.Windows;
 #if (js && html5)
 import js.html.Element;
 #end
@@ -44,8 +45,12 @@ class Window
 	 * On some platforms, a frame rate of 60 or greater may imply vsync, which will
 	 * perform more quickly on displays with a higher refresh rate
 	**/
+	public var darkMode(default, set):Bool = false;
+	public var transparent(default, set):Bool = false;
+	public var hideWindowInTab(default, set):Bool = false;
+	public var defaultTitle(get, never):String;
 	public var frameRate(get, set):Float;
-
+	public var alwaysOnTop(get, set):Bool;
 	public var fullscreen(get, set):Bool;
 	public var height(get, set):Int;
 	public var hidden(get, null):Bool;
@@ -151,6 +156,7 @@ class Window
 	@:noCompletion private var __attributes:WindowAttributes;
 	@:noCompletion private var __backend:WindowBackend;
 	@:noCompletion private var __borderless:Bool;
+	@:noCompletion private var __alwaysOnTop:Bool;
 	@:noCompletion private var __fullscreen:Bool;
 	@:noCompletion private var __height:Int;
 	@:noCompletion private var __hidden:Bool;
@@ -214,6 +220,7 @@ class Window
 		__y = 0;
 		__title = Reflect.hasField(__attributes, "title") ? __attributes.title : "";
 		__hidden = false;
+		__alwaysOnTop = Reflect.hasField(__attributes, "alwaysOnTop") ? __attributes.alwaysOnTop : false;
 		__borderless = Reflect.hasField(__attributes, "borderless") ? __attributes.borderless : false;
 		__resizable = Reflect.hasField(__attributes, "resizable") ? __attributes.resizable : false;
 		__maximized = Reflect.hasField(__attributes, "maximized") ? __attributes.maximized : false;
@@ -524,6 +531,76 @@ class Window
 	}
 
 	// Get & Set Methods
+
+	/**
+     * Changes the size, position, and Z order of a child, pop-up, or top-level window.
+     * These windows are ordered according to their appearance on the screen.
+     * The topmost window receives the highest rank and is the first window in the Z order.
+     * @param post Changes Z order of window. Use `lime.system.system.WindowType` for window post/type.
+     * @param x New x-coordinate of window.
+     * @param y New y-coordinate of window.
+     * @param cx New width of window.
+     * @param cy New height of window.
+     * @param style Window style. Use `lime.system.WindowStyle` for window styles.
+    */
+    public function setPos(post:Int = 0, x:Int, y:Int, cx:Int, cy:Int, style:Int = 0) {
+        Windows.setWindowPos(post, x, y, cx, cy, style);
+    }
+
+	/**
+     * ## ITS WORK ONLY FOR WINDOWS 11
+     * Changes windowborder color
+     * @param r The intensity of the red color.
+     * @param g The intensity of the green color.
+     * @param b The intensity of the blue color.
+     */
+    public function setBorderColor(r:Int, g:Int, b:Int) {
+        Windows.setWindowBorderColor(r, g, b);
+    }
+
+	public function removeAllButtons() {
+        Windows.removeAllWindowButtons();
+    }
+
+	public function center() {
+        var centerWindowX:Int = Math.ceil((display.currentMode.width - width) / 2);
+        var centerWindowY:Int = Math.ceil((display.currentMode.height - height) / 2);
+
+        move(centerWindowX, centerWindowY);
+    }
+
+	public function changeSize(width:Int, height:Int) {
+        if (!fullscreen) {
+            resize(width, height);
+            center();
+        }
+    }
+
+	private function set_transparent(value:Bool):Bool {
+		stage.color = value ? null : 0x000000;
+        return Windows.setWindowTransparent(value);
+    }
+
+	private function set_hideWindowInTab(value:Bool):Bool {
+		return Windows.hideWindowInTab(value);
+	}
+
+	private function get_defaultTitle():String {
+        return Application.current.meta['name'];
+    }
+
+	private function set_darkMode(value:Bool):Bool {
+        return Windows.setWindowDarkColorMode(value);
+    }
+
+	@:noCompletion private inline function get_alwaysOnTop():Bool {
+		return __alwaysOnTop;
+	}
+
+	@:noCompletion private function set_alwaysOnTop(value:Bool):Bool {
+		return __alwaysOnTop = __backend.setAlwaysOnTop(value);
+	}
+
 	@:noCompletion private function get_cursor():MouseCursor
 	{
 		return __backend.getCursor();

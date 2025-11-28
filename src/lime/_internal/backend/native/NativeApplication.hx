@@ -69,6 +69,7 @@ class NativeApplication
 	private var pauseTimer:Int;
 	private var parent:Application;
 	private var toggleFullscreen:Bool;
+	private var acceptFullscreen:Bool = false;
 
 	private static function __init__()
 	{
@@ -289,62 +290,64 @@ class NativeApplication
 					window.onKeyUp.dispatch(keyCode, modifier);
 			}
 
-			#if (windows || linux)
-			if (keyCode == RETURN)
-			{
-				if (type == KEY_DOWN)
+			if (acceptFullscreen) {
+				#if (windows || linux)
+				if (keyCode == RETURN)
 				{
-					if (toggleFullscreen && modifier.altKey && (!modifier.ctrlKey && !modifier.shiftKey && !modifier.metaKey))
+					if (type == KEY_DOWN)
 					{
-						toggleFullscreen = false;
-
-						if (!window.onKeyDown.canceled)
+						if (toggleFullscreen && modifier.altKey && (!modifier.ctrlKey && !modifier.shiftKey && !modifier.metaKey))
 						{
-							window.fullscreen = !window.fullscreen;
+							toggleFullscreen = false;
+
+							if (!window.onKeyDown.canceled)
+							{
+								window.fullscreen = !window.fullscreen;
+							}
 						}
 					}
-				}
-				else
-				{
-					toggleFullscreen = true;
-				}
-			}
-
-			#if rpi
-			if (keyCode == ESCAPE && modifier.ctrlKey && type == KEY_DOWN)
-			{
-				System.exit(0);
-			}
-			#end
-			#elseif mac
-			if (keyCode == F)
-			{
-				if (type == KEY_DOWN)
-				{
-					if (toggleFullscreen && (modifier.ctrlKey && modifier.metaKey) && (!modifier.altKey && !modifier.shiftKey))
+					else
 					{
-						toggleFullscreen = false;
-
-						if (!window.onKeyDown.canceled)
-						{
-							window.fullscreen = !window.fullscreen;
-						}
+						toggleFullscreen = true;
 					}
 				}
-				else
-				{
-					toggleFullscreen = true;
-				}
-			}
-			#elseif android
-			if (keyCode == APP_CONTROL_BACK && modifier == KeyModifier.NONE && type == KEY_UP && !window.onKeyUp.canceled)
-			{
-				var mainActivity = JNI.createStaticField("org/haxe/extension/Extension", "mainActivity", "Landroid/app/Activity;");
-				var moveTaskToBack = JNI.createMemberMethod("android/app/Activity", "moveTaskToBack", "(Z)Z");
 
-				moveTaskToBack(mainActivity.get(), true);
+				#if rpi
+				if (keyCode == ESCAPE && modifier.ctrlKey && type == KEY_DOWN)
+				{
+					System.exit(0);
+				}
+				#end
+				#elseif mac
+				if (keyCode == F)
+				{
+					if (type == KEY_DOWN)
+					{
+						if (toggleFullscreen && (modifier.ctrlKey && modifier.metaKey) && (!modifier.altKey && !modifier.shiftKey))
+						{
+							toggleFullscreen = false;
+
+							if (!window.onKeyDown.canceled)
+							{
+								window.fullscreen = !window.fullscreen;
+							}
+						}
+					}
+					else
+					{
+						toggleFullscreen = true;
+					}
+				}
+				#elseif android
+				if (keyCode == APP_CONTROL_BACK && modifier == KeyModifier.NONE && type == KEY_UP && !window.onKeyUp.canceled)
+				{
+					var mainActivity = JNI.createStaticField("org/haxe/extension/Extension", "mainActivity", "Landroid/app/Activity;");
+					var moveTaskToBack = JNI.createMemberMethod("android/app/Activity", "moveTaskToBack", "(Z)Z");
+
+					moveTaskToBack(mainActivity.get(), true);
+				}
+				#end
 			}
-			#end
 		}
 	}
 

@@ -3696,6 +3696,13 @@ namespace lime {
 
 	}
 
+	bool lime_window_set_always_on_top (value window, bool value) {
+
+		Window* targetWindow = (Window*)val_data (window);
+		return targetWindow->SetAlwaysOnTop (value);
+
+	}
+
 
 	HL_PRIM bool HL_NAME(hl_window_set_borderless) (HL_CFFIPointer* window, bool borderless) {
 
