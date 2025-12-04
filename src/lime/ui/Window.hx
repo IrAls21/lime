@@ -482,7 +482,10 @@ class Window
 			height = __maxHeight;
 		}
 
-		__backend.resize(width, height);
+		if (!fullscreen) {
+			__backend.resize(width, height);
+            center();
+        }
 
 		__width = width;
 		__height = height;
@@ -567,13 +570,6 @@ class Window
         var centerWindowY:Int = Math.ceil((display.currentMode.height - height) / 2);
 
         move(centerWindowX, centerWindowY);
-    }
-
-	public function changeSize(width:Int, height:Int) {
-        if (!fullscreen) {
-            resize(width, height);
-            center();
-        }
     }
 
 	private function set_transparent(value:Bool):Bool {
