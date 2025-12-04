@@ -45,11 +45,11 @@ class Window
 	 * On some platforms, a frame rate of 60 or greater may imply vsync, which will
 	 * perform more quickly on displays with a higher refresh rate
 	**/
+	public var frameRate(get, set):Float;
 	public var darkMode(default, set):Bool = false;
 	public var transparent(default, set):Bool = false;
 	public var hideWindowInTab(default, set):Bool = false;
 	public var defaultTitle(get, never):String;
-	public var frameRate(get, set):Float;
 	public var alwaysOnTop(default, set):Bool = false;
 	public var fullscreen(get, set):Bool;
 	public var height(get, set):Int;
