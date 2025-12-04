@@ -482,13 +482,13 @@ class Window
 			height = __maxHeight;
 		}
 
+		__width = width;
+		__height = height;
+
 		if (!fullscreen) {
 			__backend.resize(width, height);
             center();
         }
-
-		__width = width;
-		__height = height;
 	}
 
 	public function setMinSize(width:Int, height:Int):Void
@@ -566,8 +566,8 @@ class Window
     }
 
 	public function center() {
-        var centerWindowX:Int = Math.ceil((display.currentMode.width - width) / 2);
-        var centerWindowY:Int = Math.ceil((display.currentMode.height - height) / 2);
+        var centerWindowX:Int = Math.ceil((display.currentMode.width - __width) / 2);
+        var centerWindowY:Int = Math.ceil((display.currentMode.height - __height) / 2);
 
         move(centerWindowX, centerWindowY);
     }
