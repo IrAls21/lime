@@ -482,13 +482,10 @@ class Window
 			height = __maxHeight;
 		}
 
+		__backend.resize(width, height);
+
 		__width = width;
 		__height = height;
-
-		if (!fullscreen) {
-			__backend.resize(width, height);
-            center();
-        }
 	}
 
 	public function setMinSize(width:Int, height:Int):Void
