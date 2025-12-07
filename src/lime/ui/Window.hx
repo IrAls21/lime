@@ -591,7 +591,7 @@ class Window
 	}
 
 	private function set_alwaysOnTop(value:Bool):Bool {
-		return __alwaysOnTop = __backend.setAlwaysOnTop(!value);
+		return __alwaysOnTop = __backend.setAlwaysOnTop(value);
 	}
 
 	@:noCompletion private function get_cursor():MouseCursor
