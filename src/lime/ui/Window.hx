@@ -536,7 +536,7 @@ class Window
      * Changes the size, position, and Z order of a child, pop-up, or top-level window.
      * These windows are ordered according to their appearance on the screen.
      * The topmost window receives the highest rank and is the first window in the Z order.
-     * @param post Changes Z order of window. Use `lime.system.system.WindowType` for window post/type.
+     * @param post Changes Z order of window. Use `lime.system.WindowType` for window post/type.
      * @param x New x-coordinate of window.
      * @param y New y-coordinate of window.
      * @param cx New width of window.
