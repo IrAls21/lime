@@ -223,12 +223,25 @@ class Windows {
 	@:functionCode('
 		HWND hwnd = GetActiveWindow();
 
-		DWM_BLURBEHIND blurBehind = {0};
-		blurBehind.dwFlags = DWM_BB_ENABLE | DWM_BB_BLURREGION;
-		blurBehind.hRgnBlur = CreateRectRgn(-1, -1, 0, 0);
-		blurBehind.fEnable = transparent;
+		if (hwnd) {
+			LONG exStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
 
-		DwmEnableBlurBehindWindow(hwnd, &blurBehind);
+			DWM_BLURBEHIND blurBehind = {};
+			blurBehind.dwFlags = DWM_BB_ENABLE | DWM_BB_BLURREGION;
+			blurBehind.hRgnBlur = CreateRectRgn(-1, -1, 0, 0);
+			blurBehind.fEnable = transparent;
+
+			DwmEnableBlurBehindWindow(hwnd, &blurBehind);
+
+			if (transparent) {
+				exStyle |= WS_EX_LAYERED | WS_EX_TRANSPARENT;
+			} else {
+				exStyle &= ~WS_EX_LAYERED;
+				exStyle &= ~WS_EX_TRANSPARENT;
+			}
+
+			SetWindowLong(hwnd, GWL_EXSTYLE, exStyle);
+		}
 	')
 	public static function setWindowTransparent(transparent:Bool):Bool {
 		return transparent;
